@@ -54,5 +54,3 @@ class FeistelCipher64bit:
         reverse_key = tuple(reversed(set_key))
         plaintext = self.encrypt(plaintext, reverse_key, rounds).strip('\x00')
         return plaintext
-
-print('hello')
