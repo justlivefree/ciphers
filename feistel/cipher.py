@@ -34,7 +34,6 @@ class FeistelCipher64bit:
             right = bw_xor(left, self.function(right, self.generated_keys[i]))
             left = save
         return right + left
-
     @property
     def _main(self):
         data = ''
@@ -43,14 +42,14 @@ class FeistelCipher64bit:
         data = ''.join(chr(int(data[i:i + 8], 2)) for i in range(0, len(data), 8))
         return data
 
-    def encrypt(self, plaintext: str, set_keys: tuple = None, rounds: int = None):
+    def encrypt(self, plaintext: str, set_key: tuple = None, rounds: int = None):
         if rounds:
             self.rounds = rounds
-        self.generated_keys = self.set_keygen(set_keys)
+        self.generated_keys = self.set_keygen(set_key)
         self.bit_text = bit_mode(plaintext)
         return self._main
 
-    def decrypt(self, plaintext: str, set_keys: str = None, rounds: int = None):
-        reverse_key = tuple(reversed(set_keys))
+    def decrypt(self, plaintext: str, set_key=None, rounds: int = None):
+        reverse_key = tuple(reversed(set_key))
         plaintext = self.encrypt(plaintext, reverse_key, rounds).strip('\x00')
         return plaintext
