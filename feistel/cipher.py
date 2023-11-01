@@ -34,6 +34,7 @@ class FeistelCipher64bit:
             right = bw_xor(left, self.function(right, self.generated_keys[i]))
             left = save
         return right + left
+
     @property
     def _main(self):
         data = ''
