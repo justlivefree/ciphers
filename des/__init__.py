@@ -1,0 +1,1 @@
+from des.cipher import DESCipher64bit
