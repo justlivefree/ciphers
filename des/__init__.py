@@ -1,1 +1,1 @@
-from des.cipher import DESCipher64bit
+from .cipher import DESCipher

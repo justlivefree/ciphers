@@ -1,1 +1,1 @@
-from feistel.cipher import FeistelCipher64bit
+from .cipher import CoreFeistelNetwork
