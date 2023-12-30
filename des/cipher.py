@@ -1,5 +1,5 @@
 from feistel import CoreFeistelNetwork
-from tables import PC1, PC2, SHIFT, IP, _IP, E, SBOX, P
+from des.tables import PC1, PC2, SHIFT, IP, _IP, E, SBOX, P
 from tools import to_binary, left_shift, bw_xor, spilt_chunks
 
 
