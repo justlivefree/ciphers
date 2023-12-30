@@ -1,4 +1,5 @@
 .idea
 venv
 .gitignore
-test_history
+test_history.txt
+main.py
