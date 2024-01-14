@@ -2,12 +2,6 @@ import random
 
 
 def miller_rabin_test(num: int, k: int = 5) -> bool:
-    """
-    :param num: number for testing
-    :param k: test times
-    :return: True or False (prime or composite)
-    """
-
     # for optimizing
     if num <= 1:
         return False
@@ -33,5 +27,3 @@ def miller_rabin_test(num: int, k: int = 5) -> bool:
         else:
             return False
     return True
-
-

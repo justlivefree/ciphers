@@ -1,1 +1,1 @@
-from feistel.cipher import CoreFeistelNetwork
+from feistel.cipher import BaseFeistelNetwork

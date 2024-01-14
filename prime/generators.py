@@ -1,11 +1,9 @@
 import random
+
 from prime.tests import miller_rabin_test
 
 
 def sieve_of_erts(n: int) -> tuple[int, ...]:
-    """
-    TODO: optimize
-    """
     n += 1
     try:
         from numpy import int8, ones
@@ -25,9 +23,6 @@ def sieve_of_erts(n: int) -> tuple[int, ...]:
 
 
 def sieve_of_atkin(n: int) -> tuple[int, ...]:
-    """
-    TODO: optimize
-    """
     if n <= 1:
         return ()
 
@@ -74,11 +69,6 @@ def sieve_of_atkin(n: int) -> tuple[int, ...]:
 
 
 def miller_rabin_generator(n: int) -> int:
-    """
-    Generator based on Miller-Rabin test
-    :param n: number of digits
-    :return: prime number
-    """
     start = 10 ** (n - 1)
     stop = 10 ** n
 

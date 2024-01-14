@@ -1,9 +1,10 @@
 import concurrent.futures as cf
 from abc import ABC, abstractmethod
+
 from tools import bw_xor, bit_mode
 
 
-class CoreFeistelNetwork(ABC):
+class BaseFeistelNetwork(ABC):
     bit_text: str
     generated_keys: tuple | None
     rounds: int = 8
@@ -13,18 +14,18 @@ class CoreFeistelNetwork(ABC):
     raw_data = {}
 
     @abstractmethod
-    def function(self, r_side, round_key):
+    def func(self, r_side, round_key):
         pass
 
     @abstractmethod
-    def key_generation(self, _key: str | None, do_reverse: bool = False):
+    def key_generation(self, _key: str | None):
         pass
 
     def block_encrypt(self, block: str):
         left, right = block[:self.chunk_size], block[self.chunk_size:]
         for i in range(self.rounds):
             save = right
-            right = bw_xor(left, self.function(right, self.generated_keys[i]))
+            right = bw_xor(left, self.func(right, self.generated_keys[i]))
             left = save
         return right + left
 
@@ -45,5 +46,5 @@ class CoreFeistelNetwork(ABC):
         return self._main(plaintext)
 
     def decrypt(self, text: str, set_key: str):
-        self.generated_keys = self.key_generation(_key=set_key, do_reverse=True)
+        self.generated_keys = self.key_generation(_key=set_key)[::-1]
         return self._main(text).strip('\x00')

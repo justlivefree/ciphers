@@ -1,9 +1,9 @@
-from feistel import CoreFeistelNetwork
 from des.tables import PC1, PC2, SHIFT, IP, _IP, E, SBOX, P
+from feistel import BaseFeistelNetwork
 from tools import to_binary, left_shift, bw_xor, spilt_chunks
 
 
-class DESCipher(CoreFeistelNetwork):
+class DESCipher(BaseFeistelNetwork):
     rounds = 16
 
     def s_boxs(self, get_bits: str):
@@ -14,14 +14,14 @@ class DESCipher(CoreFeistelNetwork):
             result += to_binary(SBOX[i][raw][col])
         return result
 
-    def function(self, r_side, round_key):
+    def func(self, r_side, round_key):
         e_table = ''.join(map(lambda val: r_side[val - 1], E))
         to_sbox = bw_xor(e_table, round_key)
         save = self.s_boxs(to_sbox)
         per = ''.join(map(lambda val: save[val - 1], P))
         return per
 
-    def key_generation(self, _key: str, do_reverse: bool = False):
+    def key_generation(self, _key: str):
         bit_key = to_binary(_key)
         result = []
         key56 = ''.join(map(lambda val: bit_key[val - 1], PC1))
@@ -31,9 +31,7 @@ class DESCipher(CoreFeistelNetwork):
             save = cn + dn
             round_key = ''.join(map(lambda val: save[val - 1], PC2))
             result.append(round_key)
-        if do_reverse:
-            return tuple(result[::-1])
-        return tuple(result)
+        return result
 
     def block_encrypt(self, block: str):
         ip = ''.join(map(lambda val: block[val - 1], IP))
