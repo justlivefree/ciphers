@@ -1,4 +1,3 @@
 .idea
 venv
-.gitignore
 tests/main.py
