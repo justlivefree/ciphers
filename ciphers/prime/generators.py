@@ -1,6 +1,6 @@
 import random
 
-from prime.tests import miller_rabin_test
+from ciphers.prime.tests import miller_rabin_test
 
 
 def sieve_of_erts(n: int) -> tuple[int, ...]:

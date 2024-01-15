@@ -1,4 +1,4 @@
-from des import DESCipher
+from ciphers.des import DESCipher
 
 plaintext = 'The quick brown fox jumps over the lazy dog'
 key = 'password'

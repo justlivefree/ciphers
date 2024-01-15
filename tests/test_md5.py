@@ -1,4 +1,4 @@
-from md5 import MD5
+from ciphers.md5 import MD5
 
 plaintext = 'The quick brown fox jumps over the lazy dog'
 

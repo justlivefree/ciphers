@@ -1,1 +1,0 @@
-from feistel.cipher import BaseFeistelNetwork

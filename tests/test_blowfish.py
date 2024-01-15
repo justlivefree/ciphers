@@ -1,4 +1,4 @@
-from blowfish import Blowfish
+from ciphers.blowfish import Blowfish
 
 plaintext = 'The quick brown fox jumps over the lazy dog'
 key = 'password'

@@ -1,4 +1,4 @@
-from feistel import BaseFeistelNetwork
+from ciphers.feistel import BaseFeistelNetwork
 from tools import to_binary
 from .tables import P, sboxs
 
