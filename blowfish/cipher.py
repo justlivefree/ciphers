@@ -1,6 +1,6 @@
 from feistel import BaseFeistelNetwork
-from tables import P, sboxs
-from tools import to_binary, bw_xor
+from tools import to_binary
+from .tables import P, sboxs
 
 
 class Blowfish(BaseFeistelNetwork):
@@ -21,10 +21,5 @@ class Blowfish(BaseFeistelNetwork):
         result = ((s[0] & s[1]) ^ s[2]) & s[3]
         return to_binary(result)
 
-    def block_encrypt(self, block: str):
-        left, right = block[:self.chunk_size], block[self.chunk_size:]
-        for i in range(self.rounds):
-            save = left
-            left = bw_xor(right, self.func(left, self.generated_keys[i]))
-            right = save
-        return right + left
+    def block_encrypt(self, block: str, do_reverse=False):
+        return super().block_encrypt(block, True)

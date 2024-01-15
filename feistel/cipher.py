@@ -21,13 +21,17 @@ class BaseFeistelNetwork(ABC):
     def key_generation(self, _key: str | None):
         pass
 
-    def block_encrypt(self, block: str):
+    def block_encrypt(self, block: str, do_reverse=False):
         left, right = block[:self.chunk_size], block[self.chunk_size:]
+        a, b = left, right
+        if do_reverse:
+            a, b = right, left
         for i in range(self.rounds):
-            save = right
-            right = bw_xor(left, self.func(right, self.generated_keys[i]))
-            left = save
-        return right + left
+            save = b
+            b = bw_xor(a, self.func(b, self.generated_keys[i]))
+            b = save
+        result = a + b if do_reverse else b + a
+        return result
 
     def check_key(self, _key: str):
         if len(_key) != self.key_size:
