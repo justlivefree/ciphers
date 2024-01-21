@@ -1,1 +1,1 @@
-from ciphers.des.cipher import DESCipher
+from ciphers.des.cipher import DES

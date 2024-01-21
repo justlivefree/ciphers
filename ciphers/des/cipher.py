@@ -1,40 +1,41 @@
-from ciphers.des.tables import PC1, PC2, SHIFT, IP, _IP, E, SBOX, P
 from ciphers.feistel import BaseFeistelNetwork
 from ciphers.tools import to_binary, left_shift, bw_xor, spilt_chunks
+from .tables import PC1, PC2, SHIFT, IP, _IP, E, SBOX, P
 
 
-class DESCipher(BaseFeistelNetwork):
+class DES(BaseFeistelNetwork):
     rounds = 16
+    key_size = 64  # actual key size is 56 bit
 
-    def s_boxs(self, get_bits: str):
+    @staticmethod
+    def __pack(text, table):
+        return ''.join(map(lambda val: text[val - 1], table))
+
+    @staticmethod
+    def __sboxs(get_bits: str):
         result = ''
-        _chunks = spilt_chunks(get_bits, 6)
-        for i in range(len(_chunks)):
-            raw, col = map(lambda val: int(val, 2), (_chunks[i][:2], _chunks[i][2:]))
+        chunks = spilt_chunks(get_bits, 6)
+        for i in range(len(chunks)):
+            raw, col = map(lambda val: int(val, 2), (chunks[i][:2], chunks[i][2:]))
             result += to_binary(SBOX[i][raw][col])
         return result
 
-    def func(self, r_side, round_key):
-        e_table = ''.join(map(lambda val: r_side[val - 1], E))
-        to_sbox = bw_xor(e_table, round_key)
-        save = self.s_boxs(to_sbox)
-        per = ''.join(map(lambda val: save[val - 1], P))
-        return per
-
-    def key_generation(self, _key: str):
-        bit_key = to_binary(_key)
-        result = []
-        key56 = ''.join(map(lambda val: bit_key[val - 1], PC1))
+    def key_generation(self, key):
+        key, result = to_binary(key), []
+        key56 = self.__pack(key, PC1)
         cn, dn = key56[:28], key56[28:]
         for r in range(self.rounds):
             cn, dn = left_shift(cn, SHIFT[r]), left_shift(dn, SHIFT[r])
-            save = cn + dn
-            round_key = ''.join(map(lambda val: save[val - 1], PC2))
+            round_key = self.__pack(cn + dn, PC2)
             result.append(round_key)
         return result
 
-    def block_encrypt(self, block: str):
-        ip = ''.join(map(lambda val: block[val - 1], IP))
-        result = super().block_encrypt(ip)
-        inverse_ip = ''.join(map(lambda val: result[val - 1], _IP))
-        return inverse_ip
+    def func(self, r_side, round_key):
+        e_table = self.__pack(r_side, E)
+        tmp = self.__sboxs(bw_xor(e_table, round_key, 48))
+        return self.__pack(tmp, P)
+
+    def block_encrypt(self, block: str, **kwargs):
+        block = self.__pack(block, IP)
+        result = super().block_encrypt(block)
+        return self.__pack(result, _IP)

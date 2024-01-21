@@ -4,5 +4,6 @@ from ciphers.tools.tools import (
     bit_mode,
     left_shift,
     spilt_chunks,
-left_rotation
+    left_rotation,
+    mod_inverse
 )

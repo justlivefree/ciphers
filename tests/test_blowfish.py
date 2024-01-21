@@ -7,3 +7,5 @@ blow_fish = Blowfish()
 encrypted_text = blow_fish.encrypt(plaintext, key)
 decrypted_text = blow_fish.decrypt(encrypted_text, key)
 
+print(encrypted_text)
+print(decrypted_text)
